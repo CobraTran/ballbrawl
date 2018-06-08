@@ -7,6 +7,13 @@ public class PlayerMove : MonoBehaviour {
     public float Movespeed;
     public float Jumpforce;
 
+    public GameObject ground;
+
+    public string up;
+    public string down;
+    public string left;
+    public string right;
+
     public bool grounded;
     public Transform groundCheck;
     public float checkRadius;
@@ -24,36 +31,51 @@ public class PlayerMove : MonoBehaviour {
    
     // Update is called once per frame
     void FixedUpdate () {
+        
 
         grounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
-        if (Input.GetKey("a"))
+        if (grounded)
         {
-            rb2d.velocity = new Vector2(-Movespeed * Time.deltaTime, rb2d.velocity.y);
-        } else if (Input.GetKey("d"))
-        {
-            rb2d.velocity = new Vector2(Movespeed * Time.deltaTime, rb2d.velocity.y);
+            ground = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround).gameObject;
         } else
         {
-            rb2d.velocity = new Vector2(rb2d.velocity.x * stopSpeed, rb2d.velocity.y);
+            ground = null;
         }
 
-        if (Input.GetKey("s"))
+        Vector2 move = new Vector2();
+
+        if (Input.GetKey(left))
         {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y -Movespeed/3 * Time.deltaTime);
-        }
-   
-
-
-
-
-
-            if (Input.GetKey("w") && grounded)
+            move = new Vector2(-Movespeed * Time.deltaTime, rb2d.velocity.y);
+        } else if (Input.GetKey(right))
         {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, Jumpforce * Time.deltaTime );
+            move = new Vector2(Movespeed * Time.deltaTime, rb2d.velocity.y);
+        } else
+        {
+            move = new Vector2(rb2d.velocity.x * stopSpeed, rb2d.velocity.y);
         }
 
-    
+        if (Input.GetKey(down))
+        {
+            move = new Vector2(rb2d.velocity.x, rb2d.velocity.y -Movespeed/3 * Time.deltaTime);
+        }
+
+        if (Input.GetKey(up) && grounded)
+        {
+            move = new Vector2(rb2d.velocity.x, Jumpforce * Time.deltaTime );
+        }
+        
+        if (ground && ground.tag == "Ground")
+        {
+
+            surfaceEffect surface = ground.GetComponent<surfaceEffect>();
+            Debug.Log(surface.effect);
+
+        }
+        //move += surface
+
+        rb2d.velocity = move;
 
     }
     
