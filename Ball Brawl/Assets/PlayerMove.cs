@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour {
 
     public float Movespeed;
+    public float speed;
+    public float airSpeed;
     public float Jumpforce;
 
     public GameObject ground;
@@ -47,6 +49,14 @@ public class PlayerMove : MonoBehaviour {
         {
             ground = null;
         }
+
+        //make movement slower if not grounded (?)
+        if (grounded) {
+            Movespeed = speed;
+        } else {
+            Movespeed = airSpeed;
+        }
+
 
         Vector2 move = new Vector2();
 
