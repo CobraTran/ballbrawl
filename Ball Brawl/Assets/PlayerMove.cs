@@ -37,7 +37,7 @@ public class PlayerMove : MonoBehaviour {
 
         if (grounded)
         {
-            ground = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround).gameObject;
+            ground = Physics2D.OverlapCircle(groundCheck.position, checkRadius).gameObject;
         } else
         {
             ground = null;
@@ -66,14 +66,15 @@ public class PlayerMove : MonoBehaviour {
             move = new Vector2(rb2d.velocity.x, Jumpforce * Time.deltaTime );
         }
         
-        if (ground && ground.tag == "Ground")
+
+        //setvelocity surface effector workaround
+        if (ground && ground.GetComponent<surfaceEffect>())
         {
 
             surfaceEffect surface = ground.GetComponent<surfaceEffect>();
-            Debug.Log(surface.effect);
+            move += surface.effect;
 
         }
-        //move += surface
 
         rb2d.velocity = move;
 
