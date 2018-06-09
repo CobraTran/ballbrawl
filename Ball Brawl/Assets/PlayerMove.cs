@@ -66,7 +66,6 @@ public class PlayerMove : MonoBehaviour {
             move = new Vector2(rb2d.velocity.x, rb2d.velocity.y - Movespeed/3 * Time.deltaTime);
             if(walledLeft || walledRight) {
                 move.y += wallFriction * Time.deltaTime;
-                Debug.Log("fricc");
             }
         }
         if (Input.GetKey(up) && grounded){
@@ -81,7 +80,7 @@ public class PlayerMove : MonoBehaviour {
             move = new Vector2(-Jumpforce * Time.deltaTime, Jumpforce * Time.deltaTime);
         } else if (Input.GetKey(up) && walledLeft) {
             move = new Vector2(Jumpforce * Time.deltaTime, Jumpforce * Time.deltaTime);
-        } else if (walledLeft || walledRight && !Input.GetKey(down)) {
+        } else if ((walledLeft || walledRight) && !Input.GetKey(down)) {
             move.y = rb2d.velocity.y + wallFriction * Time.deltaTime;
         }
 
