@@ -69,11 +69,11 @@ public class PlayerMove : MonoBehaviour {
             move = new Vector2(Movespeed * Time.deltaTime, rb2d.velocity.y);
         } else
         {
-            move = new Vector2(rb2d.velocity.x * stopSpeed, rb2d.velocity.y);
+            move = new Vector2(move.x * stopSpeed, rb2d.velocity.y);
         }
         if (Input.GetKey(down))
         {
-            move = new Vector2(rb2d.velocity.x, rb2d.velocity.y - Movespeed/3 * Time.deltaTime);
+            move = new Vector2(move.x, rb2d.velocity.y - Movespeed/3 * Time.deltaTime);
             if(walledLeft || walledRight) {
                 move.y += wallFriction * Time.deltaTime;
             }
@@ -100,11 +100,14 @@ public class PlayerMove : MonoBehaviour {
         {
 
             surfaceEffect surface = ground.GetComponent<surfaceEffect>();
-            move += surface.effect;
+            Debug.Log(move + surface.effect);
+            rb2d.velocity = move + surface.effect;
+
+        } else {
+
+            rb2d.velocity = move;
 
         }
-
-        rb2d.velocity = move;
 
     }
     
